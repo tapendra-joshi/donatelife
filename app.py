@@ -16,12 +16,11 @@ def create_app(config_class=Config):
 
 def configure_blueprints(app):
     app.register_blueprint(dashboard_blueprint)
-
     return None
 
 def configure_db(app):
     db.init_app(app)
-    migrate.init_app(app,db)
+
     
 # def configure_config(app):
 #     # app.config.from_object(config_class)
