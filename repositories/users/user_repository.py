@@ -22,4 +22,32 @@ class UserRepository:
             return user
         return None
 
+    @staticmethod
+    def update_user(user, user_data=None):
+        if user_data:
+            user_attributes = list(user.__dict__.keys())
+            for user_data_key, user_data_value in user_data.items():
+                if user_data_key in user_attributes:
+                    setattr(user, user_data_key, user_data_value)
+            user.save()
+            return user
+        return None
+    
+    @staticmethod
+    def find_by_email(email):
+        if not email:
+            return None
+
+        user = UserModel.query.filter_by(email=email).first()
+        if user:
+            return user
+
+        return None
+
+    @staticmethod
+    def find_by_id(id):
+        user = UserModel.query.filter_by(id=id).first()
+        if user:
+            return user
+        return None
 

@@ -1,6 +1,7 @@
 from flask import Flask,jsonify,request
 from flask_dotenv import DotEnv
 from controllers.dashboard import blueprint as dashboard_blueprint
+from controllers.blood_bank_controller import blueprint as blood_bank_blueprint
 from extentions.extentions import db,migrate
 from config import Config
 app = Flask(__name__)
@@ -16,7 +17,7 @@ def create_app(config_class=Config):
 
 def configure_blueprints(app):
     app.register_blueprint(dashboard_blueprint)
-
+    app.register_blueprint(blood_bank_blueprint)
     return None
 
 def configure_db(app):

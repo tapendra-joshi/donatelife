@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-blueprint = Blueprint("dashboard_blueprint", __name__, url_prefix="/dashboard")
+blueprint = Blueprint("dashboard_blueprint", __name__, url_prefix="")
 
 @blueprint.route('/home',methods=["GET"])
 def home():

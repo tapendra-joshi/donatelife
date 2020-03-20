@@ -15,7 +15,7 @@ class BloodBankRepository:
                 o_positive = blood_stock_data.get('o_negative',0),
                 o_negative = blood_stock_data.get('o_negative',0)
             )
-            # blood_stock_data.save()
+            blood_stock.save()
             return blood_stock
         return None
 
@@ -39,8 +39,24 @@ class BloodBankRepository:
                 address = blood_bank_data.get('address'),
                 state = blood_bank_data.get('state'),
                 country = blood_bank_data.get('country'),
+                blood_stock_id = BloodBankRepository.create_blood_bank_stock(blood_bank_data.get('blood_stock')).id
             )
-            blood_bank.blood_stock_id = BloodBankRepository.create_blood_bank_stock(blood_bank_data.get('blood_stock')).id
+            
             blood_bank.save()
             return blood_bank
         return None
+
+    @staticmethod
+    def get_all_blood_banks(formatted=False):
+        
+        all_blood_banks = BloodBankModel.query.all()
+        if all_blood_banks:
+            if not formatted:
+                return all_blood_banks
+            all_blood_bank_data = {}
+            for blood_bank in all_blood_banks:
+                all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
+            return all_blood_bank_data
+        return None
+
+

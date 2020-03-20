@@ -42,4 +42,4 @@ class BaseResponse:
 
     @staticmethod
     def get_response(status=0, status_code=ResponseCode.UNKNOWN_ERROR, message=None, data=None):
-        return BaseResponse(status, status_code, message, data).toJSON()
+        return BaseResponse(status, status_code, message, data).to_json()
