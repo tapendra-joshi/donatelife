@@ -59,4 +59,27 @@ class BloodBankRepository:
             return all_blood_bank_data
         return None
 
+    @staticmethod
+    def find_by_email(email=None):
+
+        if not email:
+            return None
+        
+        blood_bank = BloodBankModel.query.filter_by(email=email).first()
+        if blood_bank:
+            return blood_bank
+        return None
+
+    @staticmethod
+    def find_by_id(id=None):
+        if not id:
+            return None
+        blood_bank = BloodBankModel.query.filter_by(id=id).first()
+        if blood_bank:
+            return blood_bank
+        return None
+
+
+
+
 

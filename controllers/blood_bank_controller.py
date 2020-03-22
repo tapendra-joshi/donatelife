@@ -19,5 +19,5 @@ def post_blood_bank():
     post_json = request.get_json()
     blood_bank = BloodBankService.create_blood_bank(post_json,formatted=True)
     if blood_bank:
-        return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_bank).to_json()),200
-    return jsonify(BaseResponse(0,ResponseCode.INVALID_REQUEST_DATA,"correct data not sent by user",None))
+        return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_bank).to_json()),201
+    return jsonify(BaseResponse(0,ResponseCode.INVALID_REQUEST_DATA,"correct data not sent by user",None).to_json()),400

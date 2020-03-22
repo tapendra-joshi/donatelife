@@ -25,21 +25,22 @@ class BloodBankModel(IndexedTimestampModel):
         self.blood_stock_id = blood_stock_id
 
     def to_json(self):
+        blood_stock_obj = BloodStock.query.filter_by(id=self.blood_stock_id).first()
         return {
             "id" : self.id,
             "name" : self.name,
             "email" : self.email,
             "address" : self.address,
-            "state" : self.state,
+            "state" : self.state.value,
             "country" : self.country,
             "blood_stock" : {
-                "ab_positive":self.blood_stock_id.ab_positive,
-                "ab_negative":self.blood_stock_id.ab_negative,
-                "a_positive":self.blood_stock_id.a_positive,
-                "a_negative":self.blood_stock_id.a_negative,
-                "b_positive":self.blood_stock_id.b_positive,
-                "o_positive":self.blood_stock_id.o_positive,
-                "o_negative":self.blood_stock_id.o_negative
+                "ab_positive":blood_stock_obj.ab_positive,
+                "ab_negative":blood_stock_obj.ab_negative,
+                "a_positive":blood_stock_obj.a_positive,
+                "a_negative":blood_stock_obj.a_negative,
+                "b_positive":blood_stock_obj.b_positive,
+                "o_positive":blood_stock_obj.o_positive,
+                "o_negative":blood_stock_obj.o_negative
             }
         }
 

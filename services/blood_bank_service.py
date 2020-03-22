@@ -13,6 +13,11 @@ class BloodBankService:
     @staticmethod
     def create_blood_bank(blood_bank_data,formatted=False):
         if blood_bank_data:
+            
+            existing_blood_bank = BloodBankRepository.find_by_email(blood_bank_data.get("email"))
+            if existing_blood_bank:
+                return None
+
             blood_bank = BloodBankRepository.create_blood_bank(blood_bank_data)
             if blood_bank:
                 if formatted:
