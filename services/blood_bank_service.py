@@ -25,4 +25,12 @@ class BloodBankService:
                     return blood_bank_json
                 return blood_bank
         return None
+
+    @staticmethod
+    def get_blood_bank_avail_btype(blood_type,formatted=False):
+        if blood_type:
+            blood_banks_data = BloodBankRepository.find_by_available_blood_stock(blood_type,formatted)
+            if blood_banks_data:
+                return blood_banks_data
+            return None
                 

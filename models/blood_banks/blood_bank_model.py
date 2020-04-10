@@ -9,18 +9,26 @@ class BloodBankModel(IndexedTimestampModel):
     
     id = Column(db.BigInteger,primary_key=True,autoincrement=True,nullable=False)
     name = db.Column(db.String(255),nullable=False)
-    email = db.Column(db.String(255),unique=True)
+    email = db.Column(db.String(255),nullable=True)
     address = db.Column(db.String(255),nullable=False)
+    city = db.Column(db.String(65),nullable=False,index=True)
     state = db.Column(ChoiceType(IndianStates), nullable=False,index=True)
+    district = db.Column(db.String(65),index=True)
+    pincode = db.Column(db.BigInteger,nullable=True,index=True)
     country = db.Column(db.String(65),nullable=False,default="India",index=True)
     blood_stock_id = db.Column(db.BigInteger,db.ForeignKey('blood_stock.id'))
+    latitude = db.Column(db.Numeric(10,8),nullable=True,index=True)
+    longitude = db.Column(db.Numeric(11,8),nullable=True,index=True)
+    contact_number = db.Column(db.BigInteger,nullable=True)
+    mobile_number = db.Column(db.BigInteger,nullable=True)
 
-    def __init__(self,name,email,state,country,address,blood_stock_id):
+    def __init__(self,name,email,state,country,address,blood_stock_id,city):
         
         self.email = email
         self.name = name
         self.address = address
         self.state = state
+        self.city = city
         self.country = country
         self.blood_stock_id = blood_stock_id
 
@@ -31,8 +39,15 @@ class BloodBankModel(IndexedTimestampModel):
             "name" : self.name,
             "email" : self.email,
             "address" : self.address,
+            "city":self.city,
             "state" : self.state.value,
             "country" : self.country,
+            "district" : self.district,
+            "latitude" : self.latitude,
+            "longitude" : self.longitude,
+            "pincode" : self.pincode,
+            "contact_number" : self.contact_number,
+            "mobile_number" : self.mobile_number,
             "blood_stock" : {
                 "ab_positive":blood_stock_obj.ab_positive,
                 "ab_negative":blood_stock_obj.ab_negative,

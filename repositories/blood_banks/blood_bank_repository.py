@@ -1,4 +1,6 @@
 from models.blood_banks.blood_bank_model import BloodBankModel,BloodStock
+from sqlalchemy import text
+from extentions.extentions import db
 
 class BloodBankRepository:
 
@@ -37,6 +39,7 @@ class BloodBankRepository:
                 name = blood_bank_data.get('name'),
                 email = blood_bank_data.get('email'),
                 address = blood_bank_data.get('address'),
+                city = blood_bank_data.get('city'),
                 state = blood_bank_data.get('state'),
                 country = blood_bank_data.get('country'),
                 blood_stock_id = BloodBankRepository.create_blood_bank_stock(blood_bank_data.get('blood_stock')).id
@@ -79,7 +82,54 @@ class BloodBankRepository:
             return blood_bank
         return None
 
+    @staticmethod
+    def find_by_city(city=None):
+        if not city:
+            return None
+        
+        blood_bank = BloodBankModel.query.filter_by(city=city).first()
+        if blood_bank:
+            return blood_bank
+        return None
 
+    @staticmethod
+    def find_by_available_blood_stock(blood_type,formatted=False):
+        data_dict = {
+            'ab_positive':BloodStock.ab_positive,
+            'ab_negative':BloodStock.ab_negative,
+            'a_positive':BloodStock.a_positive,
+            'b_positive':BloodStock.b_positive,
+            'a_negative':BloodStock.a_negative,
+            'b_negative':BloodStock.b_negative,
+            'o_positive':BloodStock.o_positive,
+            'o_negative':BloodStock.o_negative
+        }
+        blood_stocks = BloodStock.query.filter(data_dict[blood_type] > 0).all()
+        ids = [blood_stock.id for blood_stock in blood_stocks]
 
-
-
+        blood_banks = BloodBankModel.query.filter(BloodBankModel.blood_stock_id.in_(ids)).all()
+        if blood_banks:
+            if not formatted:
+                return blood_banks
+            all_blood_bank_data = {}
+            for blood_bank in blood_banks:
+                all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
+            return all_blood_bank_data
+        return None
+        
+        # where_clause_query = ""
+        # where_clause_query += (" or ".join("{0} > 0".format(blood_type) for blood_type in blood_types)) 
+        
+        # sql_text = "select id from blood_stock where {}".format(where_clause_query)
+        # sql = text(sql_text)
+        # result = db.engine.execute(sql)
+        
+        # ids = []
+        # for row in result:
+        #     ids.append(row)
+        
+        # # blood_banks = BloodBankModel.query.filter(BloodBankModel.blood_stock_id.in_(ids)).all()
+        # # blood_bank_data = {}
+        # # for blood_bank in blood_banks:
+        # #     blood_bank_data[blood_bank.id] = blood_bank.to_json()
+        # return blood_bank_data

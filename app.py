@@ -23,7 +23,8 @@ def configure_blueprints(app):
 def configure_db(app):
     db.init_app(app)
     migrate.init_app(app,db)
-    
+    return None
+
 # def configure_config(app):
 #     # app.config.from_object(config_class)
 #     env = DotEnv()
@@ -32,6 +33,7 @@ def configure_db(app):
 #     print(config_path)
 #     env.init_app(app,env_file=config_path,verbose_mode=True)
 #     return None
+
 import models
 create_app()
 
