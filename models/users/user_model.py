@@ -4,10 +4,12 @@ from models.database import IndexedTimestampModel,db,Column
 from constants.user_constants import UserSex,BloodGroup,IndianStates,UserStatus,UserVerificationStatus,BloodRequirementStatus
 from constants.hashing_constants import HashMethod
 from helpers.hash_helper import get_hash_string
+from flask_login import UserMixin
 import json
+from extentions.extentions import login_manager
 
 
-class UserModel(IndexedTimestampModel):
+class UserModel(UserMixin,IndexedTimestampModel):
     __tablename__ = "life_users"
 
     id = Column(db.BigInteger, primary_key=True, autoincrement=True, nullable=False)
@@ -18,7 +20,7 @@ class UserModel(IndexedTimestampModel):
     blood_group = db.Column(ChoiceType(BloodGroup),nullable=False)
     first_name = db.Column(db.String(255),nullable=False)
     last_name = db.Column(db.String(255),nullable=False)
-    phone_number = db.Column(db.String(15),nullable=False)
+    phone_number = db.Column(db.String(15),nullable=True)
     sex = db.Column(ChoiceType(UserSex),nullable=False,default=UserSex.UNSPECIFIED)
     birth_date = db.Column(db.DateTime,nullable=False)
     profile_picture_data = db.Column(db.JSON,name = "profile_picture_data",default={})
@@ -30,17 +32,17 @@ class UserModel(IndexedTimestampModel):
     blood_requirement_status = db.Column(ChoiceType(BloodRequirementStatus),nullable=False,default=BloodRequirementStatus.NOT_REQUIRED)
     required_blood_group = db.Column(ChoiceType(BloodGroup),nullable=True,default=None)
 
-    def __init__(self,email,password,first_name,last_name,blood_group,status,verification_status,state,blood_requirement_status,required_blood_group):
-        self.email = email
-        self.password_hash = get_hash_string(password,HashMethod.SHA256)
-        self.first_name = first_name
-        self.last_name = last_name
-        self.blood_group = blood_group
-        self.status = status
-        self.verification_status = verification_status
-        self.state = state
-        self.blood_requirement_status = blood_requirement_status
-        self.required_blood_group = required_blood_group
+    # def __init__(self,email,password,first_name,last_name,blood_group,status,verification_status,state,blood_requirement_status,required_blood_group):
+    #     self.email = email
+    #     self.password_hash = get_hash_string(password,HashMethod.SHA256)
+    #     self.first_name = first_name
+    #     self.last_name = last_name
+    #     self.blood_group = blood_group
+    #     self.status = status
+    #     self.verification_status = verification_status
+    #     self.state = state
+    #     self.blood_requirement_status = blood_requirement_status
+    #     self.required_blood_group = required_blood_group
 
     def to_json(self):
 
@@ -88,3 +90,9 @@ class UserModel(IndexedTimestampModel):
             "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             "last_updated_at": self.last_updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
+
+
+
+@login_manager.user_loader
+def load_user(id):
+    return UserModel.query.get(int(id))

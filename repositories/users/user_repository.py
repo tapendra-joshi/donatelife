@@ -1,18 +1,23 @@
 from models.users.user_model import UserModel
 from constants.user_constants import UserSex,BloodGroup,UserStatus,UserVerificationStatus
+from constants.hashing_constants import HashMethod
+from helpers.hash_helper import get_hash_string
+from extentions.extentions import login_manager
+from config import Config
 
 class UserRepository:
 
     @staticmethod
     def create_user(user_data=None):
         if user_data:
+            password = get_hash_string(str(user_data.get('password'))+ Config.SALT_KEY,HashMethod.SHA256)
             user = UserModel(
                 email = user_data.get('email'),
-                password = user_data.get('password'),
+                password_hash = password,
                 first_name = user_data.get('first_name'),
                 last_name = user_data.get('last_name'),
                 sex = user_data.get('sex'),
-                blood_group = user_data.get('blood_group')
+                blood_group = user_data.get('blood_group'),
                 state = user_data.get('state'),
                 country = user_data.get('country'),
                 birth_date = user_data.get('birth_date')
