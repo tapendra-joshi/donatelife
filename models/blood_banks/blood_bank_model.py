@@ -7,12 +7,13 @@ import json
 class BloodBankModel(IndexedTimestampModel):
     __tablename__ = "blood_banks"
     
+    
     id = Column(db.BigInteger,primary_key=True,autoincrement=True,nullable=False)
     name = db.Column(db.String(255),nullable=False)
     email = db.Column(db.String(255),nullable=True)
     address = db.Column(db.String(255),nullable=False)
     city = db.Column(db.String(65),nullable=False,index=True)
-    state = db.Column(ChoiceType(IndianStates), nullable=False,index=True)
+    state = db.Column(db.String(255), nullable=False,index=True)
     district = db.Column(db.String(65),index=True)
     pincode = db.Column(db.BigInteger,nullable=True,index=True)
     country = db.Column(db.String(65),nullable=False,default="India",index=True)
@@ -22,15 +23,18 @@ class BloodBankModel(IndexedTimestampModel):
     contact_number = db.Column(db.BigInteger,nullable=True)
     mobile_number = db.Column(db.BigInteger,nullable=True)
 
-    def __init__(self,name,email,state,country,address,blood_stock_id,city):
+    # def __init__(self,name,email,state,country,address,blood_stock_id,city):
         
-        self.email = email
-        self.name = name
-        self.address = address
-        self.state = state
-        self.city = city
-        self.country = country
-        self.blood_stock_id = blood_stock_id
+    #     self.email = email
+    #     self.name = name
+    #     self.address = address
+    #     self.district = district
+    #     self.pincode = pincode
+    #     self.city = city
+    #     self.state = state
+    #     self.city = city
+    #     self.country = country
+    #     self.blood_stock_id = blood_stock_id
 
     def to_json(self):
         blood_stock_obj = BloodStock.query.filter_by(id=self.blood_stock_id).first()

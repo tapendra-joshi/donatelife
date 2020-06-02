@@ -1,0 +1,2 @@
+from data_process.upload_blood_bank_data import upload_blood_bank_data
+upload_blood_bank_data()
