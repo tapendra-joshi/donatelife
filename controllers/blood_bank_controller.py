@@ -11,7 +11,7 @@ def get_all_blood_banks():
     all_blood_bank_data = BloodBankService.get_all_blood_banks(True)
     if all_blood_bank_data:
         return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,all_blood_bank_data).to_json()),200
-    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks data found",None).to_json()),404
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks data found",None).to_json()),201
 
 
 @blueprint.route("/create",methods=["POST"])
@@ -29,4 +29,4 @@ def get_filtered_blood_banks(blood_type):
         blood_banks = BloodBankRepository.find_by_available_blood_stock(blood_type,formatted=True)
         if blood_banks:
             return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_banks).to_json()),200
-        return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),404
+        return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
