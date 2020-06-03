@@ -17,11 +17,15 @@ class BloodBankModel(IndexedTimestampModel):
     district = db.Column(db.String(65),index=True)
     pincode = db.Column(db.BigInteger,nullable=True,index=True)
     country = db.Column(db.String(65),nullable=False,default="India",index=True)
-    blood_stock_id = db.Column(db.BigInteger,db.ForeignKey('blood_stock.id'))
+    blood_stock_id = db.Column(db.BigInteger,db.ForeignKey('blood_stock.id'),nullable=False)
     latitude = db.Column(db.Numeric(10,8),nullable=True,index=True)
     longitude = db.Column(db.Numeric(11,8),nullable=True,index=True)
-    contact_number = db.Column(db.BigInteger,nullable=True)
+    contact_number = db.Column(db.String(65),nullable=True)
     mobile_number = db.Column(db.BigInteger,nullable=True)
+
+    blood_stock_relation = db.relationship(
+        "BloodStock", foreign_keys=[blood_stock_id])
+
 
     # def __init__(self,name,email,state,country,address,blood_stock_id,city):
         
@@ -77,4 +81,4 @@ class BloodStock(Model):
     o_positive = db.Column(db.BigInteger,default=0,nullable=False,index=True)
     o_negative = db.Column(db.BigInteger,default=0,nullable=False,index=True)
 
-    blood_bank_stock_rel = db.relationship('BloodBankModel',backref='BloodStock')
+    # blood_bank_stock_rel = db.relationship('BloodBankModel',backref='BloodStock')
