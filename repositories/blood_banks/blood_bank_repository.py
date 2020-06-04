@@ -1,6 +1,8 @@
 from models.blood_banks.blood_bank_model import BloodBankModel,BloodStock
 from sqlalchemy import text
 from extentions.extentions import db
+from helpers.pagination_helpers import get_url
+from flask import request
 
 class BloodBankRepository:
 
@@ -61,6 +63,50 @@ class BloodBankRepository:
                 all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
             return all_blood_bank_data
         return None
+
+    @staticmethod
+    def get_paginated_blood_banks(formatted=False,per_page=50,page=1):
+        all_blood_banks = BloodBankModel.query.paginate(per_page=per_page,page=page)
+        
+        page_metadata = {}
+        if all_blood_banks.has_next: 
+            page_metadata["next_page"] = all_blood_banks.next_num
+            page_metadata['next_url'] = get_url(request.base_url,all_blood_banks.next_num)
+            
+        else:
+            page_metadata["next_page"] = None
+            page_metadata['next_url'] = None
+
+        if all_blood_banks.has_prev:
+            page_metadata['prev_page'] = all_blood_banks.prev_num
+            page_metadata['prev_url'] = get_url(request.base_url,all_blood_banks.prev_num)
+        else:
+            page_metadata['prev_page'] = None
+            page_metadata['prev_url'] = None
+
+        
+        page_metadata['total_pages'] = all_blood_banks.pages
+        
+        
+        
+        page_metadata['next_url']
+
+        if all_blood_banks:
+            print(all_blood_banks)
+            data = {}
+            data['page_metadata'] = page_metadata
+            
+            if not formatted:
+                data['blood_bank_data'] = all_blood_banks
+                return data
+            all_blood_bank_data = {}
+            for blood_bank in all_blood_banks.items:
+                all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
+
+            data['blood_bank_data'] = all_blood_bank_data
+            return data
+        return None
+
 
     @staticmethod
     def find_by_email(email=None):

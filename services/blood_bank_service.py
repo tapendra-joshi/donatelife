@@ -33,4 +33,12 @@ class BloodBankService:
             if blood_banks_data:
                 return blood_banks_data
             return None
+
+
+    @staticmethod
+    def get_paginated_blood_banks(page,formatted=False):
+        all_blood_bank_data = BloodBankRepository.get_paginated_blood_banks(formatted=formatted,page=page)
+        if all_blood_bank_data:
+            return all_blood_bank_data
+        return None
                 
