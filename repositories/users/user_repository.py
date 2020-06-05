@@ -18,8 +18,9 @@ class UserRepository:
                 last_name = user_data.get('last_name'),
                 sex = user_data.get('sex'),
                 blood_group = user_data.get('blood_group'),
+                city = user_data.get('city'),
                 state = user_data.get('state'),
-                country = user_data.get('country'),
+                country = user_data.get('country',"India"),
                 birth_date = user_data.get('birth_date')
             )
             user.verification_code = user_data.get('verification_code',None)

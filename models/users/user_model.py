@@ -9,6 +9,7 @@ import json
 from extentions.extentions import login_manager
 
 
+
 class UserModel(UserMixin,IndexedTimestampModel):
     __tablename__ = "life_users"
 
@@ -22,9 +23,10 @@ class UserModel(UserMixin,IndexedTimestampModel):
     last_name = db.Column(db.String(255),nullable=False)
     phone_number = db.Column(db.String(15),nullable=True)
     sex = db.Column(ChoiceType(UserSex),nullable=False,default=UserSex.UNSPECIFIED)
-    birth_date = db.Column(db.DateTime,nullable=False)
+    birth_date = db.Column(db.Date,nullable=False)
     profile_picture_data = db.Column(db.JSON,name = "profile_picture_data",default={})
-    state = db.Column(ChoiceType(IndianStates), nullable=False,index=True)
+    city = db.Column(db.String(65),nullable=False,index=True)
+    state = db.Column(db.String(65), nullable=False,index=True)
     country = db.Column(db.String(65),nullable=False,default="India",index=True)
     verification_status = db.Column(ChoiceType(UserVerificationStatus), nullable=False, default=UserVerificationStatus.UNVERIFIED)
     verification_code = db.Column(db.String(255), nullable=True, default=None, index=True)
@@ -82,6 +84,8 @@ class UserModel(UserMixin,IndexedTimestampModel):
             "sex":sex_value,
             "profile_picture_data":profile_picture_data_value,
             "status":status_value,
+            "city":self.city,
+            "state":self.state,
             "verification_status":verification_status_value,
             "email":self.email,
             "blood_requirement_status":blood_requirement_status_value,
