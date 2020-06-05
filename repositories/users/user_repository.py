@@ -43,7 +43,6 @@ class UserRepository:
     def find_by_email(email):
         if not email:
             return None
-
         user = UserModel.query.filter_by(email=email).first()
         if user:
             return user

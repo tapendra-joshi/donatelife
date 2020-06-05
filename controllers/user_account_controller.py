@@ -28,6 +28,10 @@ def post_login():
 def post_register():
     post_data = request.get_json()
     if post_data.get("email", None) and post_data.get("password", None):
+        user_exists = UserService.find_by_email(post_data.get("email"))
+        if user_exists:
+            return jsonify(BaseResponse(0, ResponseCode.UNKNOWN_ERROR, "User already exists", None).to_json()), 500
+
         user = UserService.create_user(post_data)
         if user:
             return jsonify(BaseResponse(1, ResponseCode.SUCCESS, "User created successfully", user).to_json()), 200
