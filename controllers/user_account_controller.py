@@ -30,7 +30,7 @@ def post_register():
     if post_data.get("email", None) and post_data.get("password", None):
         user_exists = UserService.find_by_email(post_data.get("email"))
         if user_exists:
-            return jsonify(BaseResponse(0, ResponseCode.UNKNOWN_ERROR, "User already exists", None).to_json()), 500
+            return jsonify(BaseResponse(0, ResponseCode.UNKNOWN_ERROR, "User already exists", None).to_json()), 409
 
         user = UserService.create_user(post_data)
         if user:
@@ -38,7 +38,7 @@ def post_register():
     return jsonify(BaseResponse(0, ResponseCode.UNKNOWN_ERROR, "There was some unknown error while creating the user", None).to_json()), 500
 
 
-@blueprint.route("/logout")
+@blueprint.route("/logout",methods=["POST"])
 def post_logout():
     logout_user()
     return jsonify(BaseResponse(1, ResponseCode.SUCCESS, "User logged out successfully", None).to_json()), 200

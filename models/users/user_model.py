@@ -79,7 +79,7 @@ class UserModel(UserMixin,IndexedTimestampModel):
         return{
             "id":self.id,
             "first_name":self.first_name,
-            "last_time":self.last_name,
+            "last_name":self.last_name,
             "blood_group":blood_group_value,
             "sex":sex_value,
             "profile_picture_data":profile_picture_data_value,
