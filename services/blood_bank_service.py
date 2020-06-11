@@ -41,4 +41,38 @@ class BloodBankService:
         if all_blood_bank_data:
             return all_blood_bank_data
         return None
+
+
+    @staticmethod
+    def find_by_state(state,formatted=False):
+        if state:
+            blood_banks_data = BloodBankRepository.find_by_state(formatted,state=state)
+            if blood_banks_data:
+                return blood_banks_data
+            return None
+        return None
+
+    @staticmethod
+    def find_by_city(city,formatted=False):
+        if city:
+            blood_banks_data = BloodBankRepository.find_by_city(formatted,city)
+            if blood_banks_data:
+                return blood_banks_data
+            return None
+        return None
+
+    @staticmethod
+    def get_all_states():
+        states = BloodBankRepository.get_all_states()
+        if states:
+            return states
+        return None
+
+    @staticmethod
+    def get_city_by_state(state):
+        cities = BloodBankRepository.get_cities_by_state(state)
+        if cities:
+            return cities
+        return None
+
                 

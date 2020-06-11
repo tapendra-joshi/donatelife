@@ -38,7 +38,42 @@ def post_blood_bank():
 @blueprint.route("/<blood_type>",methods=["GET"])
 def get_filtered_blood_banks(blood_type):
     if blood_type:
-        blood_banks = BloodBankRepository.find_by_available_blood_stock(blood_type,formatted=True)
+        blood_banks = BloodBankService.get_blood_bank_avail_btype(blood_type,formatted=True)
         if blood_banks:
             return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_banks).to_json()),200
         return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+
+
+@blueprint.route("/<state>",methods=["GET"])
+def get_blood_banks_by_state(state):
+    if state:
+        blood_banks = BloodBankService.find_by_state(state,True)
+        if blood_banks:
+            return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_banks).to_json()),200
+        return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+
+
+@blueprint.route("/<city>",methods=["GET"])
+def find_by_city(city):
+    if city:
+        blood_banks = BloodBankService.find_by_city(city,True)
+        if blood_banks:
+            return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,blood_banks).to_json()),200
+        return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no blood banks found",None).to_json()),201
+
+@blueprint.route("/states",methods=["GET"])
+def get_all_states():
+    states = BloodBankService.get_all_states()
+    if states:
+        return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,states).to_json()),200
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no states found",None).to_json()),201
+
+@blueprint.route("cities/<state>",methods=["GET"])
+def get_city_by_state(state):
+    cities = BloodBankService.get_city_by_state(state)
+    if cities:
+        return jsonify(BaseResponse(1,ResponseCode.SUCCESS,None,cities).to_json()),200
+    return jsonify(BaseResponse(0,ResponseCode.RESOURCE_NOT_FOUND,"no cities found",None).to_json()),201

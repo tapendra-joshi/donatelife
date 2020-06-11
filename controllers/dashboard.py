@@ -7,8 +7,9 @@ blueprint = Blueprint("dashboard_blueprint", __name__, url_prefix="")
 @blueprint.route('/home',methods=["GET"])
 def home():
     try:
-        # blood_banks = BloodBankRepository.find_by_available_blood_stock("ab_positive")
-        upload_blood_bank_data()
+        states = BloodBankRepository.get_cities_by_state("Andaman And Nicobar Islands")
+        print(states)
+        # upload_blood_bank_data()
         # print(blood_banks)
         # blood_bank_data = {}
         # for blood_bank in blood_banks:
@@ -20,7 +21,7 @@ def home():
         #     a.append(row)
         # print(type(result))
         # if len(a)>0:
-        return {"done":True}
+        return {"done":True,"states":states}
     except Exception as exe:
         print(exe)
         return {}

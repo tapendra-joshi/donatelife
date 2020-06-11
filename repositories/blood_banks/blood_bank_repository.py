@@ -129,13 +129,52 @@ class BloodBankRepository:
         return None
 
     @staticmethod
-    def find_by_city(city=None):
+    def find_by_city(formatted=False,city=None):
         if not city:
             return None
         
-        blood_bank = BloodBankModel.query.filter_by(city=city).first()
-        if blood_bank:
-            return blood_bank
+        blood_banks = BloodBankModel.query.filter_by(city=city).all()
+        if blood_banks:
+            if not formatted:
+                return blood_bank
+            all_blood_bank_data = {}
+            for blood_bank in blood_banks:
+                all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
+            return all_blood_bank_data
+        return None
+
+    @staticmethod
+    def find_by_state(formatted=False,state=None):
+        if not state:
+            return None
+        blood_banks = BloodBankModel.query.filter_by(state=state).all()
+        if blood_banks:
+            if not formatted:
+                return blood_bank
+            all_blood_bank_data = {}
+            for blood_bank in blood_banks:
+                all_blood_bank_data[blood_bank.id] = blood_bank.to_json()
+            return all_blood_bank_data
+        return None
+
+    @staticmethod
+    def get_all_states():
+        banks = BloodBankModel.query.distinct(BloodBankModel.state)
+        if banks:
+            all_states = []
+            for bank in banks:
+                all_states.append(bank.state)
+            return all_states
+        return None
+
+    @staticmethod
+    def get_cities_by_state(state):
+        banks = BloodBankModel.query.filter_by(state = state).distinct(BloodBankModel.city)
+        if banks:
+            cities = []
+            for banks in banks:
+                cities.append(banks.city)
+            return cities
         return None
 
     @staticmethod
