@@ -2,7 +2,7 @@
 alembic==1.4.2
 cffi==1.14.0
 click==7.1.2
-cryptography==2.9.2
+cryptography==3.2
 flask-dotenv==0.1.2
 flask-login==0.5.0
 flask-migrate==2.5.3
